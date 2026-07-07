@@ -48,6 +48,9 @@ export default function HomePage(){
     const featured = shows?.[currentSlide];
     const isInHistory = featured ? historyIds.has(featured.id) : false;
 
+    const topShows = shows.slice(0, 10);
+    const recommendedShows = shows.slice(10, 20);
+
     return (
         <div className="home-page m-5">
             <div>
@@ -113,7 +116,7 @@ export default function HomePage(){
                 <div className="rounded-lg h-80 mt-2 flex gap-4 overflow-x-scroll no-scrollbar whitespace-nowrap items-center">
                     {shows.length >0 && 
                         <>{
-                            shows.map((s)=>
+                            topShows.map((s)=>
 
                                 <Link key={s.id} to={`/content/${s.id}`}>
                                     <MovieCard key={s.id} image={s.image}/>
@@ -129,7 +132,7 @@ export default function HomePage(){
                 <div className="rounded-lg h-80 mt-2 flex gap-4 overflow-x-scroll no-scrollbar whitespace-nowrap items-center">
                     {shows.length >0 && 
                         <>{
-                            shows.map((s)=>
+                            recommendedShows.map((s)=>
                                 <Link key={s.id} to={`/content/${s.id}`}>
                                     <MovieCard key={s.id} image={s.image}/>
                                 </Link>
