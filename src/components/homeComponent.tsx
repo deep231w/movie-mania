@@ -4,6 +4,7 @@ import useMoviesHook from "../hooks/useMovies";
 import { Link, useNavigate } from "react-router-dom";
 import { AlignRightIcon, Heart, Play } from "lucide-react";
 import useWatchHistoryList from "../hooks/useHistory";
+import { useNetwork } from "../contexts/NetworkContext";
 
 interface WatchListMovie {
   id: string;
@@ -17,6 +18,8 @@ export default function HomeComponent (){
     const navigate= useNavigate();
     const { getListFromWatchHidtory }=useWatchHistoryList()
     const [listHistories ,setListHistories]=useState<WatchListMovie[]>([]);
+    const { onlineStatus } = useNetwork();
+    
     
     useEffect(() => {
         async function loadHistory() {
@@ -49,6 +52,15 @@ export default function HomeComponent (){
     const topShows = shows.slice(0, 10);
     const recommendedShows = shows.slice(10, 20);
 
+    const handleNavigate= ()=>{
+        if(!onlineStatus){
+            navigate(`/offline-content/${featured.id}`)
+            return
+        }
+
+        navigate(`/content/${featured.id}`)
+
+    }
     return(
         <>
             <div className="slide-containts rounded-lg border h-215 mt-4">
@@ -73,7 +85,7 @@ export default function HomeComponent (){
                             <div className="flex gap-2 pt-2">
                                 <button
                                     className="flex items-center gap-2 rounded-lg bg-red-600 px-8 py-4 font-semibold hover:bg-red-700"
-                                    onClick={()=>navigate(`/content/${featured.id}`)}
+                                    onClick={()=>handleNavigate()}
                                 >
                                     <Play/>
                                     Play
@@ -112,7 +124,11 @@ export default function HomeComponent (){
                         <>{
                             topShows.map((s)=>
 
-                                <Link key={s.id} to={`/content/${s.id}`}>
+                                <Link key={s.id} to={
+                                    onlineStatus
+                                    ? `/content/${s.id}`
+                                    : `/offline-content/${s.id}`
+                                }>
                                     <MovieCard key={s.id} image={s.image}/>
                                 </Link>
                             )}
