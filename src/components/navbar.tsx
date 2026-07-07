@@ -1,5 +1,7 @@
 import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
+import useNetworkHook from "../hooks/useNetwork";
+import { NetworkIcon, Wifi } from "lucide-react";
 
 interface NavbarProps {
   view: "home" | "movies";
@@ -10,6 +12,8 @@ export default function Navbar({setView}:NavbarProps){
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const navigate=  useNavigate();
+
+    const{onlineStatus ,setOnlineStatus}=useNetworkHook();
 
     return (
         <div className="nav flex justify-between">
@@ -62,9 +66,26 @@ export default function Navbar({setView}:NavbarProps){
                 </button>
             </div>
 
-            <div className="h-10 w-30 rounded-2xl border-2 border-green-700 p-1">
-                <button className="h-full w-full rounded-xl bg-green-500 text-white">
-                    Online
+            <div className="rounded-2xl border border-neutral-700 p-1">
+                <button
+                    onClick={() => setOnlineStatus((prev) => !prev)}
+                    className={`flex items-center gap-2 rounded-xl px-4 py-2 font-medium transition-all duration-200 ${
+                    onlineStatus
+                        ? "bg-green-600 text-white hover:bg-green-700"
+                        : "bg-red-600 text-white hover:bg-red-700"
+                    }`}
+                >
+                    {onlineStatus ? (
+                    <>
+                        <Wifi size={18} />
+                        <span>Online</span>
+                    </>
+                    ) : (
+                    <>
+                        <NetworkIcon size={18} />
+                        <span>Offline</span>
+                    </>
+                    )}
                 </button>
             </div>
         </div>
