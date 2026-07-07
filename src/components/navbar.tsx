@@ -1,7 +1,7 @@
 import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
-import useNetworkHook from "../hooks/useNetwork";
 import { NetworkIcon, Wifi } from "lucide-react";
+import { useNetwork } from "../contexts/NetworkContext";
 
 interface NavbarProps {
   view: "home" | "movies";
@@ -13,8 +13,7 @@ export default function Navbar({setView}:NavbarProps){
     const dropdownRef = useRef<HTMLDivElement>(null);
     const navigate=  useNavigate();
 
-    const{onlineStatus ,setOnlineStatus}=useNetworkHook();
-
+const { onlineStatus, setOnlineStatus } = useNetwork();
     return (
         <div className="nav flex justify-between">
             <div ref={dropdownRef}>

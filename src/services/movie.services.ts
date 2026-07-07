@@ -1,17 +1,41 @@
 import FetchImdbApi from "../api/imdb";
-import { getAllRecordsFromDb, insertIntoDB } from "../db/movie.db";
+import {
+  getAllRecordsFromDb,
+  getNextPageToken,
+  insertIntoDB,
+  saveNextPageToken,
+} from "../db/movie.db";
 
-export default async function MovieService(){
+export async function loadInitialMovies() {
+      console.log("API CALLED");
 
-    const dbMovies= await getAllRecordsFromDb()
+  const response = await FetchImdbApi();
 
-    if(dbMovies.length>0){
-        return dbMovies
-    }
+  await insertIntoDB(response.movies);
 
-    const fetchdMoviesRecordFromAPi= await FetchImdbApi();
+  if (response.nextPageToken) {
+    await saveNextPageToken(response.nextPageToken);
+  }
 
-    await insertIntoDB(fetchdMoviesRecordFromAPi);
+  return response.movies;
+}
 
-    return fetchdMoviesRecordFromAPi;
+export async function loadOfflineMovies() {
+  return await getAllRecordsFromDb();
+}
+
+export async function loadNextMovies() {
+  const token = await getNextPageToken();
+
+  if (!token) return [];
+
+  const response = await FetchImdbApi(token);
+
+  await insertIntoDB(response.movies);
+
+  if (response.nextPageToken) {
+    await saveNextPageToken(response.nextPageToken);
+  }
+
+  return response.movies;
 }

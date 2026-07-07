@@ -1,29 +1,25 @@
 import Dexie, { type EntityTable } from "dexie";
 import type Movie from "../interfaces/movieInterface";
 
-// interface Movie{
-//     id:     string
-//     title:  string
-//     image:  string
-//     rating: string
-//     votes:  string
-//     year:   string
-//     genres: string[]
-//     plot:   string
-//     type:   string
-// }
-
 interface WatchListMovie {
   id: string;
   title: string;
   image: string;
 }
+interface CacheEntry {
+  key: string;
+  value: string;
+}
+
 export const db= new Dexie('Movies-db') as Dexie & {
-    movies:EntityTable<Movie ,'id'>
+    movies:EntityTable<Movie ,'id'>,
+    cache: EntityTable<CacheEntry, "key">;
+
 }
 
 db.version(1).stores({
     movies: "id,title,image,rating,votes,year,genres,plot,type",
+    cache:'key'
 })
 
 export async function insertIntoDB(movies:any){
@@ -35,6 +31,19 @@ export async function insertIntoDB(movies:any){
 export async function getAllRecordsFromDb() {
     const movies = await db.movies.toArray()
     return movies
+}
+
+export async function saveNextPageToken(token: string) {
+  await db.cache.put({
+    key: "nextPageToken",
+    value: token,
+  });
+}
+
+export async function getNextPageToken() {
+  const token = await db.cache.get("nextPageToken");
+
+  return token?.value;
 }
 
 
