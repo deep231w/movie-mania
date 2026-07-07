@@ -148,7 +148,13 @@ export default function ContentPage() {
               </button>
 
               <button 
-                className="flex items-center gap-2 rounded-lg border border-gray-500 px-8 py-4 hover:bg-white hover:text-black"
+                className="flex items-center gap-2 rounded-lg border border-gray-500 px-8 py-4
+                    hover:bg-white hover:text-black
+                    disabled:cursor-not-allowed
+                    disabled:opacity-50
+                    disabled:hover:bg-transparent
+                    disabled:hover:text-white
+                "
                 onClick={()=>handleInsetToWatchList()}
                 disabled={available}
               >
