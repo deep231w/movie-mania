@@ -47,9 +47,9 @@ export default function SignIn() {
     }
   };
 
-  const handleGoogleSignIn = () => {
-    console.log("Google Sign In");
-  };
+  // const handleGoogleSignIn = () => {
+  //   console.log("Google Sign In");
+  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
@@ -103,7 +103,7 @@ export default function SignIn() {
           </button>
         </form>
 
-        <div className="my-6 flex items-center">
+        {/* <div className="my-6 flex items-center">
           <div className="h-px flex-1 bg-slate-300" />
           <span className="mx-4 text-sm text-slate-500">OR</span>
           <div className="h-px flex-1 bg-slate-300" />
@@ -120,7 +120,7 @@ export default function SignIn() {
           />
 
           Continue with Google
-        </button>
+        </button> */}
 
         <p className="mt-8 text-center text-sm text-slate-500">
           Don't have an account?{" "}
