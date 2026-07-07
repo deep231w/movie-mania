@@ -143,7 +143,11 @@ export default function HomeComponent (){
                     {shows.length >0 && 
                         <>{
                             recommendedShows.map((s)=>
-                                <Link key={s.id} to={`/content/${s.id}`}>
+                                <Link key={s.id} to={
+                                    onlineStatus
+                                    ? `/content/${s.id}`
+                                    : `/offline-content/${s.id}`
+                                }>
                                     <MovieCard key={s.id} image={s.image}/>
                                 </Link>
                                 
