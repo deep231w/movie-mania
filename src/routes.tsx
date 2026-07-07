@@ -71,6 +71,14 @@ export default function AppRouter() {
                 </ProtectedRoute>
             }
         />
+        <Route
+            path="/"
+            element={
+                localStorage.getItem("user")
+                ? <Navigate to="/home" replace />
+                : <Navigate to="/signin" replace />
+            }
+        />
       </Routes>
     </BrowserRouter>
   );

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import MovieCard from "./movieCard";
 import useMoviesHook from "../hooks/useMovies";
 import { loadNextMovies } from "../services/movie.services";
