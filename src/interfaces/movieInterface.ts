@@ -1,11 +1,11 @@
 export default interface Movie {
   id: string;
   title: string;
-  image?: string;
-  rating?: number;
-  votes?: number;
-  year?: number;
+  image: string;
+  rating: number;
+  votes: number;
+  year: number;
   genres: string[];
-  plot?: string;
+  plot: string;
   type: string;
 }

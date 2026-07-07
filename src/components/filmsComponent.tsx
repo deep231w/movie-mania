@@ -56,9 +56,15 @@ const { onlineStatus } = useNetwork();
               key={movie.id}
               ref={isLast ? lastMovieRef : null}
             >
-              <Link to={`/content/${movie.id}`}>
-                <MovieCard image={movie.image} />
-              </Link>
+              <Link
+                    to={
+                        onlineStatus
+                        ? `/content/${movie.id}`
+                        : `/offline-content/${movie.id}`
+                    }
+                    >
+                    <MovieCard image={movie.image} />
+                </Link>
             </div>
           );
         })}

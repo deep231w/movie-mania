@@ -6,6 +6,7 @@ import HomePage from "./pages/homePage";
 import { Navigate } from "react-router-dom";
 import AccountPage from "./pages/account";
 import ContentPage from "./pages/contentPage";
+import OfflineContentPage from "./pages/offlineCOntentPage";
 
 type RouteProps = {
   children: React.ReactNode;
@@ -61,6 +62,14 @@ export default function AppRouter() {
         <Route 
             path="/content/:id"
             element={<ContentPage />}
+        />
+        <Route
+            path="/offline-content/:id"
+            element={
+                <ProtectedRoute>
+                    <OfflineContentPage/>
+                </ProtectedRoute>
+            }
         />
       </Routes>
     </BrowserRouter>
