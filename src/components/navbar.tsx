@@ -13,7 +13,12 @@ export default function Navbar({setView}:NavbarProps){
     const dropdownRef = useRef<HTMLDivElement>(null);
     const navigate=  useNavigate();
 
-const { onlineStatus, setOnlineStatus } = useNetwork();
+    const { onlineStatus, setOnlineStatus } = useNetwork();
+
+    const handleSignOut= ()=>{
+        localStorage.removeItem("user");
+        navigate("/signin");
+    }
     return (
         <div className="nav flex justify-between">
             <div ref={dropdownRef}>
@@ -42,7 +47,9 @@ const { onlineStatus, setOnlineStatus } = useNetwork();
 
                         <div className="border-t" />
 
-                        <button className="flex w-full cursor-pointer items-center px-4 py-3 text-left text-sm font-medium text-red-400 transition hover:text-red-700">
+                        <button className="flex w-full cursor-pointer items-center px-4 py-3 text-left text-sm font-medium text-red-400 transition hover:text-red-700"
+                            onClick={()=>handleSignOut()}
+                        >
                             Log Out
                         </button>
                     </div>

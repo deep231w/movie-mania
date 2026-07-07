@@ -33,6 +33,10 @@ const navigate= useNavigate()
     fetchWatchList();
   },[])
 
+  const handleSignOut= ()=>{
+        localStorage.removeItem("user");
+        navigate("/signin");
+    }
   return (
     <div className="min-h-screen bg-neutral-950 text-white  p-3">
       <div className="flex items-center justify-between rounded-2xl bg-neutral-900 p-6 shadow-lg">
@@ -49,7 +53,9 @@ const navigate= useNavigate()
           </div>
         </div>
 
-        <button className="flex items-center gap-2 rounded-lg bg-red-600 px-5 py-3 transition hover:bg-red-700">
+        <button className="flex items-center gap-2 rounded-lg bg-red-600 px-5 py-3 transition hover:bg-red-700"
+          onClick={()=>handleSignOut()}
+        >
           <LogOut size={18} />
           Sign Out
         </button>
