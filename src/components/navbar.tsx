@@ -1,10 +1,16 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Navbar(){
+interface NavbarProps {
+  view: "home" | "movies";
+  setView: Dispatch<SetStateAction<"home" | "movies">>;
+}
+export default function Navbar({setView}:NavbarProps){
+
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const navigate=  useNavigate();
+
     return (
         <div className="nav flex justify-between">
             <div ref={dropdownRef}>
@@ -44,14 +50,15 @@ export default function Navbar(){
                 <button>
                     search
                 </button>
-                <button>
+                <button
+                    onClick={()=>setView('home')}
+                >
                     Home
                 </button>
-                <button>
+                <button
+                    onClick={()=>setView('movies')}
+                >
                     Films
-                </button>
-                <button>
-                    Series
                 </button>
             </div>
 
