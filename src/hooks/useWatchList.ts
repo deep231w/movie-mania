@@ -22,6 +22,7 @@ export default function useWatchList(){
     async function isAvailable(id:string) {
         return await isAvailableInWatchList(id)
     }
+    
     return{
         addToWatchList,
         getWatchList,

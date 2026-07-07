@@ -56,5 +56,7 @@ export async function getAllWatchListFromIndexedb(){
 }
 
 export async function isAvailableInWatchList(id:string) {
-    return await watchListdb.movies.get(id);
+    const movie = await watchListdb.movies.get(id);
+
+    return movie !== undefined;
 }

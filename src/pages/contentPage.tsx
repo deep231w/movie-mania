@@ -9,6 +9,7 @@ import {
   Play,
   ArrowLeft,
   Loader2,
+  AlignRightIcon,
 } from "lucide-react";
 import useWatchList from "../hooks/useWatchList";
 
@@ -18,8 +19,21 @@ export default function ContentPage() {
   const [movie, setMovie] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const navigate=useNavigate()
-  const {addToWatchList}=useWatchList()
+  const {addToWatchList ,isAvailable}=useWatchList()
 
+  const [available, setAvailable] = useState(false);
+
+  async function isAvailableList() {
+    if(!id) return
+     const exists = await isAvailable(id);
+
+  setAvailable(exists);
+
+  }
+
+  useEffect(()=>{
+    isAvailableList()
+  },[])
   useEffect(() => {
     async function fetchMovie() {
       try {
@@ -34,7 +48,7 @@ export default function ContentPage() {
     }
 
     fetchMovie();
-  }, [id]);
+  }, [id , available]);
 
   if (loading)
     return (
@@ -59,12 +73,17 @@ export default function ContentPage() {
                 image:movie.primaryImage.url
             }
 
-            await addToWatchList(content)
+            const addingwatchlistres=await addToWatchList(content)
+            console.log("during adding watchlist -", addingwatchlistres);
+            
+            setAvailable(true)
         }catch(e){
-
+            console.log("error during add to watchlist ", e);
+            throw e;
+            
         }
     }
-    
+
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
       <div
@@ -130,10 +149,20 @@ export default function ContentPage() {
 
               <button 
                 className="flex items-center gap-2 rounded-lg border border-gray-500 px-8 py-4 hover:bg-white hover:text-black"
-                onClick={()=>handleInsetToWatchList}
+                onClick={()=>handleInsetToWatchList()}
+                disabled={available}
               >
-                <Heart size={20} />
-                Watchlist
+                {available ? 
+                <>
+                    <AlignRightIcon size={20}/>
+                    In List
+                </>:
+                <>
+                    <Heart size={20} />
+                    Watchlist
+                </>
+                }
+                
               </button>
             </div>
           </div>
