@@ -2,7 +2,7 @@ import axios from "axios"
 
 export default async function FetchImdbApi(){
     try{
-        const res=  await axios.get(`https://api.imdbapi.dev/titles?types=TV_SERIES`)
+        const res=  await axios.get(`https://api.imdbapi.dev/titles`)
         const parsedContent= res.data.titles.map((title:any)=>({
                     id: title.id,
                     title: title.primaryTitle,

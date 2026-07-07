@@ -12,6 +12,7 @@ import {
   AlignRightIcon,
 } from "lucide-react";
 import useWatchList from "../hooks/useWatchList";
+import useWatchHistoryList from "../hooks/useHistory";
 
 export default function ContentPage() {
   const { id } = useParams();
@@ -20,14 +21,17 @@ export default function ContentPage() {
   const [loading, setLoading] = useState(true);
   const navigate=useNavigate()
   const {addToWatchList ,isAvailable}=useWatchList()
+  const {insertIntoWatchHistory , isAvailableInHistory }=useWatchHistoryList()
 
   const [available, setAvailable] = useState(false);
+  const [avalableInHistory , setAvalableInHistory]=useState(false);
 
   async function isAvailableList() {
     if(!id) return
      const exists = await isAvailable(id);
-
-  setAvailable(exists);
+      const existInHistory= await isAvailableInHistory(id);
+      setAvalableInHistory(existInHistory);
+    setAvailable(exists);
 
   }
 
@@ -48,7 +52,7 @@ export default function ContentPage() {
     }
 
     fetchMovie();
-  }, [id , available]);
+  }, [id , available ,  avalableInHistory]);
 
   if (loading)
     return (
@@ -84,6 +88,21 @@ export default function ContentPage() {
         }
     }
 
+    const handleInsertToWatchHistory = async()=>{
+      try{
+        const content= {
+          id:movie.id,
+          title:movie.primaryTitle,
+          image:movie.primaryImage.url
+        }
+        await insertIntoWatchHistory(content)
+        setAvalableInHistory(true)
+      }catch(e){
+        console.log("error in inseert to history-", e);
+        throw e
+        
+      }
+    }
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
       <div
@@ -142,9 +161,20 @@ export default function ContentPage() {
             </p>
 
             <div className="mt-8 flex gap-5">
-              <button className="flex items-center gap-2 rounded-lg bg-red-600 px-8 py-4 font-semibold hover:bg-red-700">
-                <Play size={20} />
-                Play
+              <button 
+                className="flex items-center gap-2 rounded-lg bg-red-600 px-8 py-4 font-semibold hover:bg-red-700"
+                onClick={()=>handleInsertToWatchHistory()}
+                disabled={avalableInHistory}
+              >
+                {avalableInHistory?
+                  <>
+                    <Play size={20} />
+                    Played
+                  </>:<>
+                    <Play size={20} />
+                    Play
+                  </>  
+              }
               </button>
 
               <button 

@@ -60,3 +60,28 @@ export async function isAvailableInWatchList(id:string) {
 
     return movie !== undefined;
 }
+
+//history db
+
+export const watchHistoryListDb= new Dexie('watchHistory-list-db') as Dexie &{
+    movies:EntityTable<WatchListMovie ,'id'>
+} 
+
+watchHistoryListDb.version(1).stores({
+    movies:"id,title,image"
+})
+export async function insertToWatchHistoryDB(content:WatchListMovie) {
+    
+    await watchHistoryListDb.movies.add(content);
+}
+
+export async function getAllWatchHistoryListDb() {
+    const data= await watchHistoryListDb.movies.toArray()
+    return data
+}
+
+export async function isAvailableInWatchHistoryDb (id:string){
+    const content = await watchHistoryListDb.movies.get(id);
+
+    return content !== undefined;
+}

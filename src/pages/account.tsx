@@ -3,6 +3,7 @@ import MovieCard from "../components/movieCard";
 import { useNavigate } from "react-router-dom";
 import useWatchList from "../hooks/useWatchList";
 import { useEffect, useState } from "react";
+import useWatchHistoryList from "../hooks/useHistory";
 
 type WatchListMovie = {
   id: string;
@@ -13,26 +14,19 @@ type WatchListMovie = {
 
 export default function AccountPage() {
 const navigate= useNavigate()
-//   const watchList = [
-//     { id: "1", image: "https://picsum.photos/200/300?1" },
-//     { id: "2", image: "https://picsum.photos/200/300?2" },
-//     { id: "3", image: "https://picsum.photos/200/300?3" },
-//     { id: "4", image: "https://picsum.photos/200/300?4" },
-//   ];
     const [watchList, setWatchList]=useState<WatchListMovie[]>([]);
 
-  const history = [
-    { id: "5", image: "https://picsum.photos/200/300?5" },
-    { id: "6", image: "https://picsum.photos/200/300?6" },
-    { id: "7", image: "https://picsum.photos/200/300?7" },
-    { id: "8", image: "https://picsum.photos/200/300?8" },
-  ];
+    const [history , setHistory]=useState<WatchListMovie[]>([]);
 
   const {getWatchList}=useWatchList()
+  const {getListFromWatchHidtory}=useWatchHistoryList()
 
   async function fetchWatchList() {
     const watchlistdata= await getWatchList();
     setWatchList(watchlistdata);  
+
+    const watchHistoryData= await getListFromWatchHidtory()
+    setHistory(watchHistoryData);
   }
   
   useEffect(()=>{
