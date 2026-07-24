@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movie-mania-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: movie-mania-app
+  template:
+    metadata:
+      labels:
+        app: movie-mania-app
+    spec:
+      containers:
+        - name: movie-mania
+
+          image: movie-mania:latest
+
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
